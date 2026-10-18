@@ -1,0 +1,16 @@
+{
+  "status": "FROZEN_BEFORE_FIRST_EXECUTION",
+  "claim": "Integer rescaling of the independently audited single-parameter RPCholesky family; no new theorem or priority claim.",
+  "symbolic_cases": {"n": [2, 3, 4, 5, 6], "q": [2, 3]},
+  "exact_error_cases": {"n": [2, 3, 4, 5], "relative_tolerance": "1/10", "q": "smallest integer q >= 2 with q^2 >= 4*n^2/eta"},
+  "verification": [
+    "Integer construction equals q^(4*n*(n-1)) times the rational formula entry by entry.",
+    "Exact orthogonal eigenbasis has minimum eigenvalue 1 and all other eigenvalues greater than 1.",
+    "Independent direct Schur recursion computes the full expected residual, with no Monte Carlo.",
+    "Known 3x3 control has RP expectation 23/28; uniform-pivot mutation must differ.",
+    "Each exact error case is at least (1-eta)*2^(n-1) and at most 2^(n-1)."
+  ],
+  "resource_cap": {"cpu_seconds": 60, "resident_bytes_observed_limit": 536870912, "paid_compute_usd": 0, "gpu": false},
+  "failure_rule": "Stop on any failed assertion; log implementation failures before any repair. No case or tolerance selection after outcomes.",
+  "excluded_claims": ["Novelty confirmed", "Human validation", "Practical kernel degradation", "Oversampling counterexample", "Public release"]
+}

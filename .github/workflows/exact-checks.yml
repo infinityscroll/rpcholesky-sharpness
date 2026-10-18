@@ -1,0 +1,17 @@
+name: Exact finite checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Recompute exact expectations
+        run: python3 rpcholesky-integer-family-20261018/verify_integer_family.py
+      - name: Confirm frozen witnesses reproduce exactly
+        run: git diff --exit-code -- 'rpcholesky-integer-family-20261018/integer-witness-k*.json'

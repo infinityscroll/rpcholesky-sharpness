@@ -1,0 +1,106 @@
+{
+  "status": "PASS_FROZEN_EXACT_INTEGER_CONTROLS",
+  "identity_cases": [
+    {
+      "n": 2,
+      "q": 2,
+      "status": "PASS"
+    },
+    {
+      "n": 2,
+      "q": 3,
+      "status": "PASS"
+    },
+    {
+      "n": 3,
+      "q": 2,
+      "status": "PASS"
+    },
+    {
+      "n": 3,
+      "q": 3,
+      "status": "PASS"
+    },
+    {
+      "n": 4,
+      "q": 2,
+      "status": "PASS"
+    },
+    {
+      "n": 4,
+      "q": 3,
+      "status": "PASS"
+    },
+    {
+      "n": 5,
+      "q": 2,
+      "status": "PASS"
+    },
+    {
+      "n": 5,
+      "q": 3,
+      "status": "PASS"
+    },
+    {
+      "n": 6,
+      "q": 2,
+      "status": "PASS"
+    },
+    {
+      "n": 6,
+      "q": 3,
+      "status": "PASS"
+    }
+  ],
+  "exact_error_cases": [
+    {
+      "n": 2,
+      "k": 1,
+      "q": 13,
+      "status": "PASS",
+      "rp_expectation_display_rounded": 1.9999999975626328,
+      "rp_over_2_to_k_display_rounded": 0.9999999987813164,
+      "maximum_entry_bits": 30,
+      "witness_sha256": "83555cbc0e4ff5283d56006d35587eb7446a66ee4e4896641098010f94cb88b3"
+    },
+    {
+      "n": 3,
+      "k": 2,
+      "q": 19,
+      "status": "PASS",
+      "rp_expectation_display_rounded": 3.994490357776679,
+      "rp_over_2_to_k_display_rounded": 0.9986225894441697,
+      "maximum_entry_bits": 102,
+      "witness_sha256": "6aef664157718de7209703a04d253e7b644a89c4cf8b5fad33d2bc2a6fa6a98e"
+    },
+    {
+      "n": 4,
+      "k": 3,
+      "q": 26,
+      "status": "PASS",
+      "rp_expectation_display_rounded": 7.988191881885415,
+      "rp_over_2_to_k_display_rounded": 0.9985239852356769,
+      "maximum_entry_bits": 226,
+      "witness_sha256": "a0126d75a416a824e0d5afb6240f35022b422998d72657ccc01e14fcd4fb78f1"
+    },
+    {
+      "n": 5,
+      "k": 4,
+      "q": 32,
+      "status": "PASS",
+      "rp_expectation_display_rounded": 15.976596776483216,
+      "rp_over_2_to_k_display_rounded": 0.998537298530201,
+      "maximum_entry_bits": 401,
+      "witness_sha256": "701d166ab278f192478ed27e0565ebaf75a5f08f01da5c7c986bf0aa650e40b6"
+    }
+  ],
+  "known_control": "23/28",
+  "uniform_mutation": "REJECTED",
+  "cpu_seconds": 0.023549999999999988,
+  "peak_resident_bytes": 21397504,
+  "memory_note": "Post-run observed peak check, not OS memory containment",
+  "plan_sha256": "cfc58f88b89a038e4796a1c6ddc829a0ad753266f2cfcc3793a56b69122a62a0",
+  "generator_sha256": "8cc2fd1d8bfeb556bd609e16f2c3409d04f75348f86433096d8413d4fc8fd36f",
+  "verifier_sha256": "1beb94dc0e8847a384009e4799be67393fbebf23e2234187623451eab2724c20",
+  "scope": "Finite exact checks support implementation; arbitrary-n claim rests on symbolic proof; novelty and human review unconfirmed."
+}

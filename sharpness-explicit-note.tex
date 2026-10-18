@@ -1,0 +1,568 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\E}{\mathbb E}
+\newcommand{\RP}{\mathrm{RP}}
+\newcommand{\DPP}{\mathrm{DPP}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\allowdisplaybreaks[1]
+\raggedbottom
+\title{Sharpness of RPCholesky error doubling\\with an explicit integer family}
+\author{\small AI-assisted research project directed by Jitendra Prajapati}
+\date{18 October 2026 --- public research draft, version 2}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Chen, Epperly, Tropp, and Webber proved that the expected trace residual
+after exactly $k$ randomly pivoted Cholesky pivots is at most $2^k$ times
+the optimal rank-$k$ trace error. We give an explicit positive-definite
+family in dimension $k+1$ approaching this factor. A single rational
+parameter, explicit error bounds, and an integer rescaling yield finite
+witnesses with polynomial encoding length. On the same family, the
+normalized expected residual of size-$k$ determinant sampling tends to
+$k+1$. The construction concerns exactly $k$ pivots; one further pivot
+exhausts the family, so no oversampling conjecture is refuted. The proposed
+matching lower bound has undergone separately tasked AI checks, but human
+mathematical review, novelty, and publication priority remain unconfirmed.
+\end{abstract}
+
+\section{Statement, algorithm, and attribution}
+
+For a real symmetric positive-definite $d\times d$ matrix $A$, ordinary
+randomly pivoted Cholesky (RPCholesky) starts with $R_0=A$. Given $R_j$,
+it chooses $i$ with probability $(R_j)_{ii}/\tr R_j$ and sets
+\[
+ R_{j+1}=R_j-\frac{R_je_ie_i^{\mathsf T}R_j}{(R_j)_{ii}}.
+\]
+An exhausted residual stays zero. Let
+$\tau_k(A)=\sum_{i>k}\lambda_i(A)$, with eigenvalues in decreasing order.
+Thus $\tau_k$ is the optimal rank-$k$ trace error. All statements below
+use exact arithmetic and this prescribed pivot law. They concern an
+expectation over pivot choices, not a lower bound on every sampled path.
+
+\begin{theorem}[Sharpness of the published upper bound]\label{thm:sharp}
+For every integer $k\geq1$,
+\begin{equation}\label{eq:supremum}
+ \sup_{d>k,\ A\succ0}\frac{\E\tr R_k(A)}{\tau_k(A)}=2^k.
+\end{equation}
+The supremum is unchanged when $A$ is restricted to real symmetric
+positive-definite integer matrices of dimension $k+1$.
+\end{theorem}
+
+The upper bound is the existing result of Chen, Epperly, Tropp, and Webber
+\cite[Lemma~5.5]{CETW}; it is not a contribution of this note.
+The proposed contribution is a matching explicit lower construction and
+its quantitative analysis. RPCholesky, fixed-size determinant sampling,
+Schur-complement identities, Cauchy--Binet, and cofactor identities are
+established ingredients. Perturbed-simplex lower bounds, including the
+$k=1$ limiting factor $2$, are established in \cite[Proposition~3.3]{DRVW}.
+Constructions combining orthogonal simplices with separated scales are
+also established \cite[Section~3]{DKM}. The final inverse-diagonal and
+determinant-sampling identities used here are standard and are recorded,
+for example, in \cite[Section~4.2]{Simons}. No novelty is claimed for
+these ingredients, the weighted contrast basis, or the general idea of
+scale separation. The adaptive survivor-law analysis below concerns the
+specific ordinary RPCholesky sampling law.
+Theorem~\ref{thm:sharp} is independent of any interpretation of a
+conjecture; the carefully qualified thesis implication appears in
+Section~\ref{sec:scope}.
+
+The proof will establish a rational one-parameter family with a uniform
+error estimate, then clear its denominators. This avoids a choice of
+successively smaller parameters without an explicit dependence between
+them. In particular, rare pivot paths are controlled after multiplication
+by their potentially large terminal amplification.
+
+\section{The explicit family and quantitative assertion}
+
+Fix $n=k+1\geq2$ and $0<t\leq1/2$. Define
+\begin{equation}\label{eq:parameters}
+ w_i=t^{i-1},\qquad S_m=\sum_{i=1}^m w_i^2,\qquad
+ Z=S_n,\qquad p_i=\frac{w_i^2}{Z},\qquad
+ h=t^{4n},\qquad \delta=t^{4n(n-1)}.
+\end{equation}
+For $1\leq m<n$, let the weighted contrast $v_m\in\R^n$ have entries
+\begin{equation}\label{eq:vectors}
+ (v_m)_i=\begin{cases}
+ w_iw_{m+1},&1\leq i\leq m,\\
+ -S_m,&i=m+1,\\
+ 0,&i>m+1.
+ \end{cases}
+ \qquad
+ A_0=\sum_{m=1}^{n-1}h^{m-1}v_mv_m^{\mathsf T},\qquad
+ A=A_0+\delta I_n.
+\end{equation}
+The arguments in Sections~\ref{sec:inputs}--\ref{sec:noise} first allow
+arbitrary $0<h\leq1$ and $\delta>0$; the values in
+\eqref{eq:parameters} are substituted only at the end.
+
+\begin{theorem}[Uniform finite-parameter estimate]\label{thm:quantitative}
+The matrix $A$ in \eqref{eq:parameters}--\eqref{eq:vectors} is positive
+definite, rational for rational $t$, and has $\tau_{n-1}(A)=\delta$.
+Moreover,
+\begin{align}
+ \left|\frac{\E\tr R_{n-1}(A)}{\delta}-2^{n-1}\right|
+ &\leq n2^{n-1}t^2+
+ \bigl[2^n n(n-1)+2(1+(n-1)^2)\bigr]t^4\label{eq:finebound}\\
+ &\leq 2^{n+1}n^2t^2.\label{eq:simplebound}
+\end{align}
+Consequently, for $\eta>0$, any integer
+\begin{equation}\label{eq:qchoice}
+ q\geq\max\{2,2n/\sqrt\eta\},\qquad t=1/q,
+\end{equation}
+gives a finite rational matrix satisfying
+\begin{equation}\label{eq:relative}
+ (1-\eta)2^{n-1}\leq
+ \frac{\E\tr R_{n-1}(A)}{\tau_{n-1}(A)}\leq2^{n-1}.
+\end{equation}
+The last upper bound invokes \cite[Lemma~5.5]{CETW}.
+\end{theorem}
+
+The constants and exponents are convenient safe choices; optimality of
+these choices is not asserted. For absolute error $\epsilon$ in the
+normalized expectation, it suffices to replace \eqref{eq:qchoice} by
+$q\geq\max\{2,\sqrt{2^{n+1}n^2/\epsilon}\}$.
+
+\section{Uniform spectral and principal-minor inputs}\label{sec:inputs}
+
+For $m<\ell$, the restriction of $v_\ell$ to the support of $v_m$ is
+$w_{\ell+1}w$. Since $v_m^{\mathsf T}w=0$, the vectors $v_m$ are
+nonzero and mutually orthogonal. Directly,
+$\|v_m\|^2=S_mS_{m+1}$. Hence $A_0$ has kernel $\operatorname{span}(w)$,
+and its nonzero eigenvalues are
+\begin{equation}\label{eq:eigenvalues}
+ \lambda_m=h^{m-1}S_mS_{m+1},\qquad
+ \lambda_*:=\min_m\lambda_m\geq h^{n-2}.
+\end{equation}
+No ordering of the individual $\lambda_m$ is required. Adding $\delta I$
+makes the smallest eigenvalue exactly $\delta$, proving the spectral-tail
+assertion of Theorem~\ref{thm:quantitative}.
+
+Write $u=w/\sqrt Z$ and $p_{\min}=p_n$. The semidefinite inequality
+$A_0\succeq\lambda_*(I-uu^{\mathsf T})$ gives, for every nonempty
+proper coordinate set $T$,
+\begin{equation}\label{eq:principal-lower}
+ A_0[T,T]\succeq h^{n-2}p_{\min}I_T=:\mu I_T.
+\end{equation}
+Indeed the least eigenvalue of $I_T-u_Tu_T^{\mathsf T}$ is
+$1-\|u_T\|^2=\sum_{j\notin T}p_j\geq p_{\min}$.
+Thus every proper principal submatrix is positive definite. Also
+\begin{equation}\label{eq:pmin}
+ 1\leq Z\leq\frac43,\qquad
+ p_{\min}^{-1}\leq2t^{-2(n-1)},\qquad
+ p_{\min}^{-2}\leq2t^{-4(n-1)}.
+\end{equation}
+The last constant follows from $Z^2\leq16/9<2$, independently of the
+preceding, looser factor-$2$ bound.
+
+Let $V$ have rows $v_1,\ldots,v_{n-1}$. For $r\leq n-1$, restrict its
+first $r$ rows to the first $r+1$ coordinates, obtaining $H_r$.
+Its kernel is spanned by $(w_1,\ldots,w_{r+1})$, so its signed maximal
+cofactors are proportional to these entries. Cauchy--Binet determines the
+constant:
+\begin{equation}\label{eq:cofactors}
+ \det(H_r\text{ with column }j\text{ omitted})^2
+   =w_j^2\left(\prod_{\ell=1}^r S_\ell\right)^2.
+\end{equation}
+For completeness, the sum of the squared cofactors is
+$\det(H_rH_r^{\mathsf T})=\prod_{\ell=1}^r S_\ell S_{\ell+1}$.
+Divide by $\sum_{j=1}^{r+1}w_j^2=S_{r+1}$ and use $S_1=1$ to obtain
+\eqref{eq:cofactors}.
+
+An additional coefficient-sum bound will avoid any hidden combinatorial
+factor. Put $B=\sum_{m=1}^{n-1}v_mv_m^{\mathsf T}$. Its nonzero
+eigenvalues are $S_mS_{m+1}$, so $\|B\|\leq16/9<2$. For every
+size-$r$ coordinate set $T$,
+\begin{equation}\label{eq:minor-sum}
+ \sum_{\substack{I\subseteq\{1,\ldots,n-1\}\\|I|=r}}
+       \det(V[I,T])^2
+   =\det B[T,T]\leq2^r.
+\end{equation}
+This bounds the sum of all squared-minor coefficients, not just each
+coefficient separately.
+
+\section{The hierarchical law and its weighted error}\label{sec:hierarchy}
+
+After selecting a coordinate set $S$, the residual diagonal at unused
+$i$ equals $\det A_0[S\cup\{i\},S\cup\{i\}]/\det A_0[S,S]$.
+Consequently the next-pivot law on $A_0$ is
+\begin{equation}\label{eq:transition}
+ P_0(i\mid S)=\frac{\det A_0[S\cup\{i\},S\cup\{i\}]}
+ {\sum_{j\notin S}\det A_0[S\cup\{j\},S\cup\{j\}]}.
+\end{equation}
+This is a transition identity; it does not identify the final RP subset
+law with determinant sampling. All blocks used have size at most $n-1$.
+
+Call a size-$m$ selected set \emph{legal} if
+$S=\{1,\ldots,m+1\}\setminus\{J\}$ for some $J\leq m+1$.
+The empty set is legal with representative $J=1$. At a legal state with
+$m\leq n-2$, put $r=m+1$ and $e=r(r-1)/2$. Cauchy--Binet gives
+\begin{equation}\label{eq:cb}
+ \det A_0[T,T]=\sum_{|I|=r}
+ h^{\sum_{a\in I}(a-1)}\det(V[I,T])^2,
+ \qquad |T|=r.
+\end{equation}
+The unique least exponent is $e$, from $I=\{1,\ldots,r\}$;
+every other exponent is at least $e+1$. For $T=S\cup\{i\}$, the
+leading coefficient is nonzero only for $i=J$ or $i=m+2$.
+By \eqref{eq:cofactors}, these coefficients are
+\begin{equation}\label{eq:leading}
+ c_J=w_{m+2}^2\left(\prod_{\ell=1}^r S_\ell\right)^2,
+ \qquad
+ c_{m+2}=w_J^2\left(\prod_{\ell=1}^r S_\ell\right)^2.
+\end{equation}
+For other unused $i$, set $c_i=0$. Write each determinant weight as
+$h^e c_i+E_i$. Nonnegative coefficients, $h\leq1$, and
+\eqref{eq:minor-sum} imply $0\leq E_i\leq2^rh^{e+1}$.
+Thus the total leading and remainder weights obey
+\begin{equation}\label{eq:leading-remainder}
+ L:=h^e\sum_i c_i\geq h^e t^{2(n-1)},\qquad
+ E:=\sum_iE_i\leq n2^{n-1}h^{e+1}.
+\end{equation}
+The lower bound is deliberately loose: $J\leq n-1$ and each $S_\ell\geq1$.
+
+Let $Q$ normalize the two leading coefficients. The actual transition is
+exactly the mixture $(L/(L+E))Q+(E/(L+E))U$, where $U$ normalizes the
+remainders when $E>0$. Its total variation distance from $Q$ is at most
+\begin{equation}\label{eq:alpha}
+ \alpha:=n2^{n-1}h\,t^{-2(n-1)}.
+\end{equation}
+We use $\TV$ as the maximal difference of event probabilities, equal to
+the smallest possible disagreement probability in a coupling. Couple
+the RP path and the $Q$ path while they agree. The latter always stays
+legal; a union bound over $n-1$ transitions bounds the probability of any
+disagreement by $(n-1)\alpha$. This includes all illegal RP paths, and
+requires no estimate after the first disagreement.
+
+Let $J$ now denote the final unselected coordinate and put $f(J)=1/p_J$.
+Because $0<f\leq1/p_{\min}$, \eqref{eq:pmin} gives the crucial weighted
+bound
+\begin{equation}\label{eq:hierarchy-error}
+ \left|\E_{P_0}f(J)-\E_Q f(J)\right|
+ \leq2^n n(n-1)h\,t^{-4(n-1)}.
+\end{equation}
+In particular, convergence of transition probabilities alone has not
+been used to justify convergence of this unbounded-as-$t\to0$ payoff.
+
+The law $Q$ is an explicit tournament. Starting with $J_1=1$, introduce
+$j=2,\ldots,n$; if the old representative is $i<j$, it survives with
+probability $p_i/(p_i+p_j)$, and the new representative is $j$ otherwise.
+The opposite-column coefficients in \eqref{eq:leading} give exactly
+these survival probabilities. If $F_j=\E[1/p_{J_j}]$, then
+\[
+ \E[1/p_{J_j}\mid J_{j-1}=i]=\frac2{p_i+p_j},
+ \qquad F_1=Z.
+\]
+Since $p_j/p_i=t^{2(j-i)}\leq t^2$,
+\begin{equation}\label{eq:tournament}
+ Z\left(\frac2{1+t^2}\right)^{n-1}\leq F_n\leq Z2^{n-1},
+ \qquad |F_n-2^{n-1}|\leq n2^{n-1}t^2.
+\end{equation}
+For the last inequality use $(1+x)^{-(n-1)}\geq1-(n-1)x$ and
+$(1-t^2)^{-1}\leq1+\frac43t^2$ for $t\leq1/2$.
+
+\section{Uniform noise control and completion of the bound}\label{sec:noise}
+
+Let $P_\delta$ be the RP path law for $A_0+\delta I$. For a proper set
+$T$ of size $r$, \eqref{eq:principal-lower} implies, with $x=\delta/\mu$,
+\[
+ 1\leq\frac{\det(A_0[T,T]+\delta I_T)}{\det A_0[T,T]}
+ \leq(1+x)^r.
+\]
+Every transition weight in \eqref{eq:transition} is therefore tilted by
+a factor between $1$ and $\beta=(1+x)^{n-1}$. It follows pointwise that
+$P_\delta(i\mid S)\geq P_0(i\mid S)/\beta$. The transition-law overlap
+is at least $\beta^{-1}$, so its total variation distance is at most
+$1-\beta^{-1}\leq(n-1)x$. This last inequality holds for every $x\geq0$.
+Coupling all $n-1$ transitions, now at arbitrary selected states, gives
+\begin{equation}\label{eq:noise-law}
+ \TV(P_\delta,P_0)\leq(n-1)^2\frac{\delta}{\mu}.
+\end{equation}
+
+After $n-1$ pivots, the scalar Schur-complement identity gives
+$\tr R_{n-1}(A)=1/(A^{-1})_{JJ}$. Spectral decomposition yields
+\[
+ (A^{-1})_{jj}=p_j/\delta+b_j,
+ \qquad 0\leq b_j\leq\lambda_*^{-1}\leq h^{-(n-2)}.
+\]
+Thus the normalized endpoint residual is
+$g_\delta(j)=1/(p_j+\delta b_j)$, and
+\begin{equation}\label{eq:endpoint}
+ 0\leq f(j)-g_\delta(j)
+ \leq\frac{\delta h^{-(n-2)}}{p_{\min}^2}.
+\end{equation}
+Comparing $\E_{P_\delta}g_\delta$ first with $\E_{P_\delta}f$ and
+then with $\E_{P_0}f$, equations \eqref{eq:noise-law}--\eqref{eq:endpoint}
+and $\mu=h^{n-2}p_{\min}$ show
+\begin{align}
+ \left|\E_{P_\delta}g_\delta(J)-\E_{P_0}f(J)\right|
+ &\leq[1+(n-1)^2]\frac{\delta h^{-(n-2)}}{p_{\min}^2}\notag\\
+ &\leq2[1+(n-1)^2]\delta h^{-(n-2)}t^{-4(n-1)}.
+ \label{eq:noise-error}
+\end{align}
+The comparison payoff $f$ under $P_0$ is a limiting amplification weight;
+it is not the residual trace of the rank-$(n-1)$ matrix $A_0$, which
+vanishes after $n-1$ pivots. This distinction accounts for both endpoint
+and path-law perturbations.
+
+\begin{proof}[Completion of Theorem~\ref{thm:quantitative}]
+Substitute $h=t^{4n}$ and $\delta=t^{4n(n-1)}$. The two dangerous
+weighted factors become
+\begin{equation}\label{eq:exponents}
+ h t^{-4(n-1)}=t^4,\qquad
+ \delta h^{-(n-2)}t^{-4(n-1)}=t^4.
+\end{equation}
+The triangle inequality applied to \eqref{eq:hierarchy-error},
+\eqref{eq:tournament}, and \eqref{eq:noise-error} proves
+\eqref{eq:finebound}. Since $t^4\leq t^2$ and
+\[
+ n2^{n-1}+2^n n(n-1)\leq2^n n^2,
+ \qquad 2[1+(n-1)^2]\leq2n^2\leq2^n n^2,
+\]
+we obtain \eqref{eq:simplebound}. Dividing by $2^{n-1}$ and taking
+$t=1/q$ gives relative error at most $4n^2/q^2$, proving the tolerance
+claim. The published upper bound supplies the upper side of
+\eqref{eq:relative}.
+\end{proof}
+
+\section{Integer matrices and encoding length}\label{sec:integer}
+
+The rational family admits a formula using only integer powers and sums.
+Let $q\geq2$ be an integer, $t=1/q$, and $D=4n(n-1)$. Define
+\begin{equation}\label{eq:integer-vectors}
+ (z_m)_i=\begin{cases}
+ q^{m-i},&1\leq i\leq m,\\
+ -\displaystyle\sum_{\ell=0}^{m-1}q^{2m-1-2\ell},&i=m+1,\\
+ 0,&i>m+1.
+ \end{cases}
+\end{equation}
+These are precisely $z_m=q^{2m-1}v_m$. Therefore
+\begin{equation}\label{eq:integer-matrix}
+ M_{n,q}:=I_n+\sum_{m=1}^{n-1}
+ q^{D-4n(m-1)-4m+2}z_mz_m^{\mathsf T}=q^D A.
+\end{equation}
+The coefficient exponent decreases with $m$ and equals $6$ at $m=n-1$;
+all coefficients are positive integers. The $z_m$ are orthogonal and
+orthogonal to $(q^{n-1},q^{n-2},\ldots,q,1)$. Hence $M_{n,q}$ is
+integer SPD, its least eigenvalue is $1$, and $\tau_{n-1}(M_{n,q})=1$.
+
+Multiplication by a positive scalar leaves every RP pivot probability
+unchanged and scales every residual and spectral tail by that scalar.
+Theorem~\ref{thm:quantitative} therefore gives the following consequence.
+
+\begin{corollary}[Finite integer witness]\label{cor:integer}
+For $n\geq2$, $\eta>0$, and an integer $q$ satisfying
+\eqref{eq:qchoice}, the explicit integer matrix \eqref{eq:integer-matrix}
+satisfies
+\[
+ \tau_{n-1}(M_{n,q})=1,\qquad
+ (1-\eta)2^{n-1}\leq\E\tr R_{n-1}(M_{n,q})\leq2^{n-1}.
+\]
+Each entry has $O(n^2\log q)$ bits, and the full dense matrix has
+$O(n^4\log q)$ bits. With $0<\eta<1$ and
+$q=\lceil2n/\sqrt\eta\rceil$, this is
+$O(n^4(\log n+\log(1/\eta)))$ bits in total.
+\end{corollary}
+
+\begin{proof}
+Only the size bound remains. Since $h\leq1$, $A_0\preceq B$, and
+\eqref{eq:parameters} gives $\delta\leq1$. Thus
+$\|A\|\leq16/9+1<3$. Every entry of $M_{n,q}=q^DA$ has absolute
+value less than $3q^D$, proving the per-entry and dense encoding bounds.
+The stated choice of $q$ has
+$\log q=O(\log n+\log(1/\eta))$.
+\end{proof}
+
+This is a polynomial encoding-length statement, not a polynomial-time
+claim for exact expectation evaluation. The small finite checks below
+enumerate pivot paths. No numerical conditioning or floating-point
+stability guarantee follows from a short exact encoding.
+
+\begin{proof}[Proof of Theorem~\ref{thm:sharp}]
+The published upper bound applies to every SPD input. For fixed $k$, put
+$n=k+1$ in Corollary~\ref{cor:integer}, and let $\eta\downarrow0$.
+Every chosen tolerance gives a finite integer SPD matrix, so the supremum
+over that restricted class is at least $2^k$. Together with the upper
+bound this proves both assertions. No singular limiting matrix is used
+as an input, and no finite attainment of the supremum is asserted.
+\end{proof}
+
+\section{Same-size determinant sampling}
+
+A size-$k$ determinant sample (a $k$-DPP with kernel $A$) selects $T$ with
+probability $\det A[T,T]/e_k(A)$, where $e_k$ is the $k$th elementary
+symmetric polynomial of the eigenvalues. Its residual is the same
+selected-set Schur residual. For $k=n-1$, every set omits one $j$.
+Multiplying its weight by its residual cancels its principal determinant,
+giving the exact identity
+\begin{equation}\label{eq:dpp-exact}
+ \E\tr R_{n-1}^{\DPP}(A)
+ =\frac{n\det A}{e_{n-1}(A)}=\frac n{\tr(A^{-1})}.
+\end{equation}
+By \eqref{eq:eigenvalues},
+\[
+ \frac{\E\tr R_{n-1}^{\DPP}(A)}{\delta}
+ =\frac n{1+\delta\sum_{m=1}^{n-1}(\lambda_m+\delta)^{-1}},
+ \qquad
+ 0\leq\delta\sum_m(\lambda_m+\delta)^{-1}
+ \leq(n-1)t^{4n}.
+\]
+Consequently
+\begin{equation}\label{eq:dpp-bounds}
+ \frac n{1+(n-1)t^{4n}}
+ \leq\frac{\E\tr R_{n-1}^{\DPP}(A)}{\delta}\leq n,
+ \qquad
+ \lim_{t\downarrow0}\frac{\E\tr R_{n-1}^{\RP}(A)}
+ {\E\tr R_{n-1}^{\DPP}(A)}=\frac{2^{n-1}}n.
+\end{equation}
+For $0<\eta<1$, the integer tolerance choice gives a finite RP/DPP
+expected-error ratio at least $(1-\eta)2^{n-1}/n$. Thus no universal
+constant or polynomial in $k$ bounds the same-$k$ ratio for all SPD
+matrices. The DPP value $k+1$ is a family limit, not an equality asserted
+for every finite member. This compares trace errors at the same number
+of selected coordinates, not runtimes or practical kernel performance.
+
+\section{Illustrative exact finite checks}
+
+The accompanying integer-family records contain ten identity cases
+($n=2,\ldots,6$, $q=2,3$) and four complete exact expectation cases,
+all recorded as passing the fixed protocol. The identity checks compare
+\eqref{eq:integer-matrix} entry by entry with $q^DA$ and check its full
+orthogonal eigenbasis. For the expectation cases, the smallest admissible
+integer $q$ in \eqref{eq:qchoice} was chosen with $\eta=1/10$.
+The recorded values are:
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$k$ & $q$ & $\E\tr R_k(M_{k+1,q})$ & Ratio to $2^k$ & Max. entry bits\\
+\midrule
+1 & 13 & 1.9999999976 & 0.9999999988 & 30\\
+2 & 19 & 3.9944903578 & 0.9986225894 & 102\\
+3 & 26 & 7.9881918819 & 0.9985239852 & 226\\
+4 & 32 & 15.9765967765 & 0.9985372985 & 401\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $\tau_k=1$ exactly. Displayed decimals are rounded; all pass/fail
+comparisons use rational arithmetic. The direct recursion weights every
+positive residual diagonal by its fraction of the trace, performs the
+Schur update, and enumerates the remaining paths. A known $3\times3$
+control gives $23/28$; an intentionally uniform-pivot mutation gives a
+different result and is rejected. The saved finite expectations are
+strictly below $2^k$.
+
+These checks illustrate the construction and test the implementation.
+They are not Monte Carlo estimates, benchmarks, or evidence by finite
+extrapolation for arbitrary $n$. The theorem and its tolerance guarantee
+rest on the proof above. A separate AI audit checked code, saved-record
+consistency, and hashes without independently rerunning the expectation
+recursion; it should not be described as an additional execution.
+
+\section{Scope, thesis interpretation, and review status}\label{sec:scope}
+
+The sharpness theorem rules out a universal polynomial $C(r)$ satisfying
+\begin{equation}\label{eq:poly-reading}
+ \E\tr R_r(A)\leq C(r)\tau_r(A)
+ \quad\text{for all positive-definite }A.
+\end{equation}
+Indeed choose $r$ so that $2^r>C(r)$, then choose the finite tolerance
+small enough to violate the proposed inequality. This conclusion is
+independent of any ambiguity in an external statement.
+
+Epperly's thesis \cite[Conjecture~11.2, printed p.~182]{Thesis} proposes
+an improved polynomial $r$-step bound. The printed display is
+\[
+ \tr(A-A^{(r)})\leq C(r)\tr(A-[A]_r),\qquad C(r)=\operatorname{poly}(r).
+\]
+There are two notation issues: the thesis defines $A^{(r)}$ as a residual,
+making the displayed subtraction an approximation trace, and the display
+omits expectation. Its adjacent paragraph cites CETW25 Lemma~5.5 as
+establishing the relevant bound with $C(r)=2^r$. That citation and the
+surrounding discussion support the expected-residual interpretation
+\eqref{eq:poly-reading}. \emph{Under that interpretation},
+Theorem~\ref{thm:sharp} contradicts the proposed polynomial bound.
+This repaired expression is an interpretation, not a verbatim quotation
+of the printed equation, and the author's intended notation has not been
+confirmed. The project source audit checked both the official deposit
+and arXiv:2512.15929v1 of 17 December 2025. The primary claim of this note
+remains sharpness of the independently stated published upper bound.
+
+Every matrix constructed here has dimension $r+1$ and is exhausted by its
+next pivot. The argument therefore does not refute the thesis's separate
+oversampling conjecture, the $O(r/\varepsilon)$ question discussed in
+\cite{NewAnalysis}, or valid oversampling guarantees. It also does not
+establish a median-error or fixed-confidence obstruction. Rare paths can
+matter to the expectation, and no practical application degradation is
+claimed.
+
+\paragraph{Attribution and status.}
+The project was directed by Jitendra Prajapati. OpenAI Codex produced the
+construction, derivation, explicit integer rescaling, implementation,
+and source-audit work. Separately tasked AI agents checked the main
+mechanism, uniform perturbation bounds, exponent arithmetic, integer
+rescaling, finite-control artifacts, and source scope. These checks are
+not formal verification or independent human mathematical validation.
+Bounded literature searches did not establish priority; novelty and
+publication priority remain unconfirmed. This public research draft has
+not been peer reviewed and claims no external endorsement or journal
+acceptance. Independent human mathematical review remains pending.
+
+\begin{thebibliography}{9}
+\bibitem{CETW}
+Y.~Chen, E.~N.~Epperly, J.~A.~Tropp, and R.~J.~Webber.
+\newblock Randomly pivoted Cholesky: Practical approximation of a kernel
+matrix with few entry evaluations.
+\newblock \emph{Communications on Pure and Applied Mathematics}
+78(5) (2025), 995--1041.
+\newblock \href{https://doi.org/10.1002/cpa.22234}{doi:10.1002/cpa.22234}.
+Lemma~5.5 and Section~5.4.
+
+\bibitem{Thesis}
+E.~N.~Epperly.
+\newblock \emph{Make the Most of What You Have: Resource-Efficient
+Randomized Algorithms for Matrix Computations}.
+\newblock PhD thesis, California Institute of Technology, 2025.
+\newblock \href{https://doi.org/10.7907/pef3-mg80}{doi:10.7907/pef3-mg80}.
+Chapter~11, Conjecture~11.2, printed p.~182.
+Lightly edited revision:
+\href{https://arxiv.org/abs/2512.15929v1}{arXiv:2512.15929v1},
+17 December 2025.
+
+\bibitem{DRVW}
+A.~Deshpande, L.~Rademacher, S.~Vempala, and G.~Wang.
+\newblock Matrix Approximation and Projective Clustering via Volume Sampling.
+\newblock \emph{Theory of Computing} 2 (2006), 225--247.
+\newblock \href{https://doi.org/10.4086/toc.2006.v002a012}
+{doi:10.4086/toc.2006.v002a012}. Proposition~3.3.
+
+\bibitem{DKM}
+M.~Derezi\'{n}ski, R.~Khanna, and M.~W.~Mahoney.
+\newblock Improved guarantees and a multiple-descent curve for Column Subset
+Selection and the Nystr\"om method.
+\newblock \href{https://arxiv.org/abs/2002.09073v3}{arXiv:2002.09073v3},
+18 December 2020. Section~3.
+
+\bibitem{Simons}
+N.~Amsel et al.
+\newblock Linear Systems and Eigenvalue Problems: Open Questions from a
+Simons Workshop.
+\newblock \href{https://arxiv.org/abs/2602.05394v2}{arXiv:2602.05394v2}, 2026.
+Section~4.2 (scribe: Mark Fornace), equations~(16)--(17).
+
+\bibitem{NewAnalysis}
+E.~Epperly.
+\newblock A new analysis of the randomly pivoted Cholesky algorithm.
+\newblock \href{https://arxiv.org/abs/2608.20633}{arXiv:2608.20633v1}, 2026.
+\end{thebibliography}
+\end{document}

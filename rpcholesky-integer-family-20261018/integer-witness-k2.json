@@ -1,0 +1,38 @@
+{
+  "n": 3,
+  "k": 2,
+  "q": 19,
+  "eta": "1/10",
+  "matrix_decimal_strings": [
+    [
+      "13569980418174090924784935003",
+      "-257829627945307727247332195520",
+      "-6148049820842"
+    ],
+    [
+      "-257829627945307727247332195520",
+      "4898762930960846817716342323803",
+      "-323581569518"
+    ],
+    [
+      "-6148049820842",
+      "-323581569518",
+      "2225594035144805"
+    ]
+  ],
+  "tau_k": "1",
+  "rp_expectation": {
+    "numerator_hex": "0x7b019fbfbc7f0dd751ebd5e573a48375c8b9c2509b5ab2b77aa509a48d4318135abff0ea2b5a5103b432421d84178a590adcb3de2758d740bf2bb17aa3181fdba763cd778",
+    "denominator_hex": "0x1ecb43b60c58966951546f0e8b28096bf9ef56b417f390726d0c544fa09370dc3b64fa77dfb2eff52383886d8256d5a291cc7be59648b43f6ec0089c045b5310414ff31d5"
+  },
+  "dpp_expectation": {
+    "numerator_hex": "0x5bec012fa6cee0dc6a474418f9569c17b51c0af",
+    "denominator_hex": "0x1ea40065379a4ed42d15d5fa55cdcf909334dff"
+  },
+  "eigenvalues": [
+    "1",
+    "4912332911379020908624096649883",
+    "2225611065753727"
+  ],
+  "method": "Exact full Schur-recursion expectation, no Monte Carlo"
+}

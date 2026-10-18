@@ -1,0 +1,80 @@
+{
+  "status": "Public research draft; human mathematical review and priority unconfirmed.",
+  "files": [
+    {
+      "path": ".github/workflows/exact-checks.yml",
+      "bytes": 575,
+      "sha256": "7ebf5e3481877c88290e213bf5cafc0fc76d55ae43090b32ec7096986d9177f1"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 50,
+      "sha256": "b737bc3aae9010e017d561c21be7a143e3ac2fd259546c28634cd30f6cbe8a9c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5694,
+      "sha256": "33acf81276f03bb1c84e938cbeb4a8f8c5cd0c6b05d0fbf78c0a9fc2d97c33f5"
+    },
+    {
+      "path": "rpcholesky-integer-family-20261018/EXACT-CONTROLS.json",
+      "bytes": 2655,
+      "sha256": "d0444345567f37d8c10fe2fac371ad1e853262a0db0118b583bed2fdcba14a6e"
+    },
+    {
+      "path": "rpcholesky-integer-family-20261018/PLAN.json",
+      "bytes": 1257,
+      "sha256": "cfc58f88b89a038e4796a1c6ddc829a0ad753266f2cfcc3793a56b69122a62a0"
+    },
+    {
+      "path": "rpcholesky-integer-family-20261018/cli-example.json",
+      "bytes": 1962,
+      "sha256": "242cb59f9bb686f0c62ce5c7fcb9524f162b536fd49c2af38a2868fd9d37638d"
+    },
+    {
+      "path": "rpcholesky-integer-family-20261018/integer-witness-k1.json",
+      "bytes": 515,
+      "sha256": "83555cbc0e4ff5283d56006d35587eb7446a66ee4e4896641098010f94cb88b3"
+    },
+    {
+      "path": "rpcholesky-integer-family-20261018/integer-witness-k2.json",
+      "bytes": 1101,
+      "sha256": "6aef664157718de7209703a04d253e7b644a89c4cf8b5fad33d2bc2a6fa6a98e"
+    },
+    {
+      "path": "rpcholesky-integer-family-20261018/integer-witness-k3.json",
+      "bytes": 3619,
+      "sha256": "a0126d75a416a824e0d5afb6240f35022b422998d72657ccc01e14fcd4fb78f1"
+    },
+    {
+      "path": "rpcholesky-integer-family-20261018/integer-witness-k4.json",
+      "bytes": 13030,
+      "sha256": "701d166ab278f192478ed27e0565ebaf75a5f08f01da5c7c986bf0aa650e40b6"
+    },
+    {
+      "path": "rpcholesky-integer-family-20261018/integer_family.py",
+      "bytes": 2479,
+      "sha256": "8cc2fd1d8bfeb556bd609e16f2c3409d04f75348f86433096d8413d4fc8fd36f"
+    },
+    {
+      "path": "rpcholesky-integer-family-20261018/verify_integer_family.py",
+      "bytes": 5445,
+      "sha256": "1beb94dc0e8847a384009e4799be67393fbebf23e2234187623451eab2724c20"
+    },
+    {
+      "path": "rpcholesky-single-parameter-family-20261018/SINGLE-PARAMETER-PROOF.md",
+      "bytes": 11116,
+      "sha256": "637d739c5fa6eac27b2e5897afbfc8487ea88445d10ba27a19ccf0d8820bcb8e"
+    },
+    {
+      "path": "sharpness-explicit-note.pdf",
+      "bytes": 368994,
+      "sha256": "7c46c5f9044885468a1b4c8cae5ddc2d04fbfacd396a4b86683366580dae315d"
+    },
+    {
+      "path": "sharpness-explicit-note.tex",
+      "bytes": 25009,
+      "sha256": "c70cdcc3b4afa2a619aacedceca32fbda4d227d31174dc77b8315f60f3bbb4ce"
+    }
+  ]
+}
